@@ -4,15 +4,14 @@
 <html>
 <head>
 
-	<meta http-equiv="Content-Type" content="text/html" charset= "utf-8">
-	<title>LIWC</title>	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="Word Classes Geographical Distribution Files/myScript.js"></script>
-	<link rel="stylesheet" type="text/css" href="Word Classes Geographical Distribution Files/styleSheet.css">
-	<link rel="stylesheet" type="text/css" href="Word Classes Geographical Distribution Files/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<title>LIWC</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" integrity="sha256-xkEoWEC2R3sOXaM8jnaKT43guoCyTbkiGAFratj9x1Q=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js" integrity="sha256-pWcaN4v5ns1GjPqNmdzgMUgJiQ1rzKL3CdWkodDCaRA=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" integrity="sha256-IFHWFEbU2/+wNycDECKgjIRSirRNIDp2acEB5fvdVRU=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="main.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="main.css">
 
 </head>
 <body>
@@ -28,13 +27,13 @@
 	<center>
 	<div id = "text" style="width:1200px;">
 	<font size="4">
-		This visualization can show the geographic distribution of <a href="LIWC_Dictionary.htm">Linguistic Inquiry and Word Count (LIWC) word classes</a> in the U.S. The LIWC categories output are percentages of total words within a text. For example, after analyzing the text of a state, we could discover that the Positive Emotion number to be 0.034. That means that 3.4 percent of all the words in the text were positive emotion words.
+		This visualization can show the geographic distribution of <a href="liwc_dictionary.html">Linguistic Inquiry and Word Count (LIWC) word classes</a> in the U.S. The LIWC categories output are percentages of total words within a text. For example, after analyzing the text of a state, we could discover that the Positive Emotion number to be 0.034. That means that 3.4 percent of all the words in the text were positive emotion words.
 <br><br>
 In the drop-down list below, after selecting a word class, a map appears that shows its proportional frequency distribution. The actual proportional frequency of the selected word class for a specific state appears when hovering the mouse over that state.
 	<br><br>
 	The demo can also map the most positively and negatively correlated word classes (using Spearman's correlation) and their respective distribution maps. The viewer can also choose to compare two word classes. Similarly, the distribution maps of these two classes will be shown, and a bar graph will indicate their correlation coefficient (-1 to 1).
 	<br><br>
-The data is derived from analyzing over 4.6M blog posts of over 200K Blogger users in the U.S. containing over two billion distinct words. This demo is currently being extended to include distributions of distinct words and core values categories (<a href="http://www.aaai.org/ocs/index.php/ICWSM/ICWSM15/paper/view/10482/10486">Boyd et al. 2015</a>).
+The data is derived from analyzing over 4.6M blog posts of over 200K Blogger users in the U.S. containing over two billion distinct words. This demo is currently being extended to include distributions of distinct words and core values categories (<a href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM15/paper/view/10482/10486">Boyd et al. 2015</a>).
 	</font>
 	</div>
 	</center>
@@ -611,5 +610,3 @@ The data is derived from analyzing over 4.6M blog posts of over 200K Blogger use
 
 </body>
 </html>
-
-
