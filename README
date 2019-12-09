@@ -1,0 +1,29 @@
+Group member:
+Jiatao Fan, Xinghai Zhang, Po-Jung Huang, Hengjing Wang
+
+There are two ways to view our product:
+
+1. Directly go to: percyhuang.info/WordClassesGeographicalDistribution
+
+2. Before open our site, please open the terminal, switch to this directory and run a server in order to 
+view our complete page. 
+For example, you can run a simple server by typing:
+
+									python -m SimpleHTTPServer 8000
+
+After making sure a server is running in current directory, then open our page in a browser (Chrome or Safari are highly recommended.
+Our page currently does not support viewing in Firefox)
+by typing in address bar:
+
+									http://localhost:8000/
+
+
+
+Word Classes Geographical Distribution.html:
+The webpage
+
+Word Classes Geographical Distribution Files/styleSheet.css:
+The css file for styling the page
+
+Word Classes Geographical Distribution Files/myScript.css:
+The javascript file for controling behaviors on the page. Make sure you add your js code here.

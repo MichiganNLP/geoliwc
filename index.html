@@ -1,0 +1,615 @@
+<!-- Author: Jiatao Fan, Edit: Konstantinos Pappas-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html" charset= "utf-8">
+	<title>LIWC</title>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="Word Classes Geographical Distribution Files/myScript.js"></script>
+	<link rel="stylesheet" type="text/css" href="Word Classes Geographical Distribution Files/styleSheet.css">
+	<link rel="stylesheet" type="text/css" href="Word Classes Geographical Distribution Files/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+	<script type="text/javascript">
+
+	/*set up page here*/
+
+	</script>
+
+	<div id = "header">LIWC Word Classes Geographical Distribution</div>
+
+	<center>
+	<div id = "text" style="width:1200px;">
+	<font size="4">
+		This visualization can show the geographic distribution of <a href="LIWC_Dictionary.htm">Linguistic Inquiry and Word Count (LIWC) word classes</a> in the U.S. The LIWC categories output are percentages of total words within a text. For example, after analyzing the text of a state, we could discover that the Positive Emotion number to be 0.034. That means that 3.4 percent of all the words in the text were positive emotion words.
+<br><br>
+In the drop-down list below, after selecting a word class, a map appears that shows its proportional frequency distribution. The actual proportional frequency of the selected word class for a specific state appears when hovering the mouse over that state.
+	<br><br>
+	The demo can also map the most positively and negatively correlated word classes (using Spearman's correlation) and their respective distribution maps. The viewer can also choose to compare two word classes. Similarly, the distribution maps of these two classes will be shown, and a bar graph will indicate their correlation coefficient (-1 to 1).
+	<br><br>
+The data is derived from analyzing over 4.6M blog posts of over 200K Blogger users in the U.S. containing over two billion distinct words. This demo is currently being extended to include distributions of distinct words and core values categories (<a href="http://www.aaai.org/ocs/index.php/ICWSM/ICWSM15/paper/view/10482/10486">Boyd et al. 2015</a>).
+	</font>
+	</div>
+	</center>
+
+	<div id= "tooltip-container"></div>
+
+	<div id = "wordSelectorWrapper">
+
+		<select id = "wordSelector" onchange = "selectPrimaryWord(this);">
+
+				<script>
+
+					wordSelectorOptions = document.getElementById("wordSelector");
+
+					for (var i = 0; i < words.length; i++) {
+
+						if (i == 0) {
+
+							wordSelectorOptions.innerHTML += '<OPTION class = "wordSelectorOptions" selected = "selected" value="' + words[i] + '">' + words[i];
+
+						} else {
+
+							wordSelectorOptions.innerHTML += '<OPTION class = "wordSelectorOptions" value="' + words[i] + '">' + words[i];
+
+						}
+						
+					}
+				</script>
+		
+		</select>
+	
+	</div>
+	
+	<div id = "defaultMapView">
+	
+		<div id = "defaultMap">
+
+			<script>
+				var WIDTH = 600;
+  				var HEIGHT = 382;
+  				var SCALE = 0.7;
+				drawMap("", "defaultMap", WIDTH, HEIGHT, SCALE);
+			</script>
+
+		</div>
+	
+	</div>
+
+	<div id = "correlationAndComparisonView">
+	
+		<table id = "buttonsWrapper">
+
+			<tr>
+				
+				<td> 
+				
+					<button id = "mostCorrelatedWordClassesButton" class = "buttons" onclick = "displayMostCorrelatedWordClassesMaps()"> 
+						Most correlated word classes 
+					</button>
+
+				</td>
+
+				<td class = "blankCellButtonsWrapper"></td>
+
+				<td>
+
+					<button id = "leastCorrelatedWordClassesButton" class = "buttons" onclick = "displayLeastCorrelatedWordClassesMaps()">
+						Least correlated word classes
+					</button>
+
+				</td>
+
+				<td class = "blankCellButtonsWrapper"></td>
+				
+				<td>
+				
+					<a href = "#popup">
+						<button id = "compareButton" class = "buttons">
+							Compare 
+						</button>
+					</a>
+
+				</td>
+				
+			</tr>
+
+		</table>
+		
+		<div "primaryWordWrapper">
+
+			<div id = "primaryWord">
+
+				Family
+
+			</div>
+
+		</div>
+	
+		<div id = "frequencyMap">
+
+	
+		</div>
+		
+		<div id = "correlatedWordClassesMapsWrapper">
+
+			<table id = "mostCorrelatedWordClassesMaps">
+
+				<tr>
+				
+					<td>
+
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "mostCorrelatedWord1" class = "correlatedWords">
+								
+									FriendShip
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td id = "mostCorrelatedWord1Correlation" class = "correlatedWordCorrelations">
+								
+									<label>Correlation:</label>
+									<label id = "mostCorrelatedWord1Value" class = "correlatedWordCorrelationValues">0.9</label>
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td class = "correlationBarsCells">
+									
+									<div class = "correlationProgressBars">
+    									<div id = "mostCorrelatedWord1CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+
+								</td>
+								
+							</tr>
+							
+							<tr>
+				
+								<td id = "mostCorrelatedMap1">
+					
+									
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+
+					</td>
+					
+					<td>
+					
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "mostCorrelatedWord2" class = "correlatedWords">
+								
+									Love
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+
+								<td id = "mostCorrelatedWord2Correlation" class = "correlatedWordCorrelations">
+								
+									<label>Correlation:</label>
+									<label id = "mostCorrelatedWord2Value" class = "correlatedWordCorrelationValues">0.7</label>
+
+								</td>
+
+							</tr>
+							
+							<tr>
+
+								<td class = "correlationBarsCells">
+
+									<div class = "correlationProgressBars">
+    									<div id = "mostCorrelatedWord2CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+
+								</td>
+
+							</tr>
+							
+							<tr>
+					
+								<td id = "mostCorrelatedMap2">
+
+									
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+					
+					</td>
+
+					<td>
+					
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "mostCorrelatedWord3" class = "correlatedWords">
+								
+									Help
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+
+								<td id = "mostCorrelatedWord3Correlation" class = "correlatedWordCorrelations">
+
+									<label>Correlation:</label>
+									<label id = "mostCorrelatedWord3Value" class = "correlatedWordCorrelationValues">0.5</label>
+
+								</td>
+
+							</tr>
+							
+							<tr>
+
+								<td class = "correlationBarsCells">
+
+									<div class = "correlationProgressBars">
+    									<div id = "mostCorrelatedWord3CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<td id = "mostCorrelatedMap3">
+					
+									
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+						
+					</td>
+			
+				</tr>
+
+			</table>
+			
+			<table id = "leastCorrelatedWordClassesMaps">
+
+				<tr>
+				
+					<td>
+
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "leastCorrelatedWord1" class = "correlatedWords">
+								
+									FriendShip
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td id = "leastCorrelatedWord1Correlation" class = "correlatedWordCorrelations">
+								
+									<label>Correlation:</label>
+									<label id = "leastCorrelatedWord1Value" class = "correlatedWordCorrelationValues">0.1</label>
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td class = "correlationBarsCells">
+
+									<div class = "correlationProgressBars">
+    									<div id = "leastCorrelatedWord1CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+				
+								<td id = "leastCorrelatedMap1">
+					
+									
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+
+					</td>
+					
+					<td>
+					
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "leastCorrelatedWord2" class = "correlatedWords">
+								
+									Love
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+
+								<td id = "leastCorrelatedWord2Correlation" class = "correlatedWordCorrelations">
+								
+									<label>Correlation:</label>
+									<label id = "leastCorrelatedWord2Value" class = "correlatedWordCorrelationValues">0.1</label>
+
+								</td>
+
+							</tr>
+							
+							<tr>
+
+								<td class = "correlationBarsCells">
+
+									<div class = "correlationProgressBars">
+    									<div id = "leastCorrelatedWord2CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+								
+								</td>
+
+							</tr>
+							
+							<tr>
+					
+								<td id = "leastCorrelatedMap2">
+
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+					
+					</td>
+
+					<td>
+					
+						<table class = "correlatedWordTables">
+
+							<tr>
+							
+								<td id = "leastCorrelatedWord3" class = "correlatedWords">
+								
+									Help
+								
+								</td>
+								
+							</tr>
+							
+							<tr>
+
+								<td id = "leastCorrelatedWord3Correlation" class = "correlatedWordCorrelations">
+								
+									<label>Correlation:</label>
+									<label id = "leastCorrelatedWord3Value" class = "correlatedWordCorrelationValues">0.1</label>
+
+								</td>
+
+							</tr>
+							
+							<tr>
+
+								<td class = "correlationBarsCells">
+
+									<div class = "correlationProgressBars">
+    									<div id = "leastCorrelatedWord3CorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    									</div>
+  									</div>
+
+								</td>
+
+							</tr>
+
+							<tr>
+
+								<td id = "leastCorrelatedMap3">
+					
+									
+					
+								</td>
+								
+							</tr>
+							
+						</table>
+						
+					</td>
+			
+				</tr>
+
+			</table>
+
+		</div>
+		
+		<div id = "comparisonView">
+
+			<div id = "comparisonCorrelation">
+
+					<label>Correlation:</label>
+					<label id = "comparisonCorrelationValues">0.9</label>
+
+			</div>
+
+			<div id = "comparisonCorrelationBarsCell">
+
+					<div class = "comparisonCorrelationProgressBar">
+    					<div id = "comparisonCorrelationBarValue" class = "progress-bar progress-bar-success" role="progressbar" style="width:40%">
+    					</div>
+  					</div>
+							
+			</div>
+			
+			<table id = "comparisonMaps">
+
+				<tr>
+						
+					<td id = "comparisonWord1" class = "comparisonWords">
+							
+						Family
+							
+					</td>
+					
+					<td id = "comparisonWord2" class = "comparisonWords">
+							
+						FriendShip
+							
+					</td>
+							
+				</tr>
+
+				<tr>
+
+					<td id = "comparisonMap1">
+				
+						
+
+					</td>
+					
+					<td id = "comparisonMap2">
+				
+						
+
+					</td>
+
+				</tr>
+
+			</table>
+
+		</div>
+
+	</div>
+
+	<div id="popup" class="overlay">
+
+		<div id = "popupWindow">
+
+			<div id = "popupHeader">Please choose a word class to compare</div>
+			
+			<div id = "popupWordSelectorWrapper">
+
+				<select id = "popupWordSelector">
+
+					<script>
+
+						popupWordSelectorOptions = document.getElementById("popupWordSelector");
+						for (var i = 0; i < words.length; i++) {
+
+							if (i == 0) {
+
+								popupWordSelectorOptions.innerHTML += '<OPTION class = "wordSelectorOptions" selected = "selected" value="' + words[i] + '">' + words[i];
+
+							} else {
+
+								popupWordSelectorOptions.innerHTML += '<OPTION class = "wordSelectorOptions" value="' + words[i] + '">' + words[i];
+
+							}
+						
+						}
+
+					</script>
+		
+				</select>
+	
+			</div>
+
+			<table id = "popupButtonsWrapper">
+
+				<tr>
+
+					<td>
+					
+						<a href="#p">
+
+							<button class = "popupButtons" onclick = "selectWordToCompare();"> OK </button>
+
+						</a>
+
+					</td>
+					
+					<td class = "popupBlankCellWrapper"></td>
+					
+					<td >
+					
+						<a href="#">
+
+							<button class = "popupButtons"> Cancel </button>
+
+						</a>
+
+					</td>
+				
+				</tr>
+
+			</table>
+
+		</div>
+
+	</div>
+
+	<center>
+	<div>
+	<br><br><br><br><br><br><br>
+	<font size="3">
+	Created by
+	<a href="mailto:pappus@umich.edu?Subject=LIWC%20webpage" target="_top">Konstantinos Pappas</a>,
+	<a href="mailto:hengjing@umich.edu?Subject=LIWC%20webpage" target="_top">Hengjing Wang</a>,
+	<a href="mailto:jiataof@umich.edu?Subject=LIWC%20webpage" target="_top">Jiatao Fan</a>,
+	<a href="mailto:xinghai@umich.edu?Subject=LIWC%20webpage" target="_top">Xinghai Zhang</a>, and
+	<a href="mailto:pojungh@umich.edu?Subject=LIWC%20webpage" target="_top">Po-Jung Huang</a>.
+	</font>	
+	</div>
+	</center>
+
+
+</body>
+</html>
+
+
